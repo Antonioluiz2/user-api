@@ -1,8 +1,16 @@
 package com.itexperts.projeto.controller;
 
+import java.util.List;
+
+import org.aspectj.apache.bcel.generic.RET;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,4 +31,21 @@ public class UserController {
 		u= userService.create(user);
 		return ResponseEntity.ok().body(u);
 	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<Void> update(@RequestBody User user, @PathVariable Long id){
+		userService.update(user, id);
+		return ResponseEntity.noContent().build();
+	}
+	@GetMapping("/{list}")
+	public ResponseEntity<List<User>> getAllList(){
+		List<User> users=userService.getAll();
+		return ResponseEntity.ok().body(users);
+	}
+	@GetMapping("/page")
+	public ResponseEntity<Page<User>> getAllPage(Pageable pageable){
+			Page<User> users = userService.getAll(pageable);		
+		return ResponseEntity.ok().body(users);
+	}
+	
 }
